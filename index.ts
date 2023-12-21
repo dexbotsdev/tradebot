@@ -42,16 +42,7 @@ const USDC = new Token(
   "USDC",
   "USD Coin"
 );
-/* const USDT = new Token(
-  CHAIN_ID,
-  "0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7",
-  6,
-  "USDT",
-  "Tether USD"
-); */
 
-// declare bases used to generate trade routes
-// const BASES = [WAVAX, USDC, USDT];
 const BASES = [WAVAX, USDC];
 
 const publicClient = createPublicClient({
@@ -66,10 +57,10 @@ const walletClient = createWalletClient({
 });
 
 // the input token in the trade
-const inputToken = WAVAX;
+const inputToken = USDC;
 
 // the output token in the trade
-const outputToken = USDC;
+const outputToken = WAVAX;
 
 // specify whether user gave an exact inputToken or outputToken value for the trade
 const isExactIn = true;
@@ -96,8 +87,8 @@ const allPairs = PairV2.initPairs(allTokenPairs);
 // generates all possible routes to consider
 const allRoutes = RouteV2.createAllRoutes(allPairs, inputToken, outputToken);
 
-const isNativeIn = true; // set to 'true' if swapping from Native; otherwise, 'false'
-const isNativeOut = false; // set to 'true' if swapping to Native; otherwise, 'false'
+const isNativeIn = false; // set to 'true' if swapping from Native; otherwise, 'false'
+const isNativeOut = true; // set to 'true' if swapping to Native; otherwise, 'false'
 
 // generates all possible TradeV2 instances
 const trades = await TradeV2.getTradesExactIn(
@@ -139,6 +130,7 @@ const {
   args, // e.g.[amountIn, amountOut, (pairBinSteps, versions, tokenPath) to, deadline]
   value, // e.g. 0x0
 } = bestTrade.swapCallParameters(swapOptions);
+
 
 const { request } = await publicClient.simulateContract({
   address: router,
